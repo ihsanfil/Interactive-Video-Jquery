@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ihsan - ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+
+    @RenderBody()
+    
+
+    @RenderSection("scripts", required: false)
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        /**== video play pause == **/
+        $('.play').click(function () {
+            var mediaVideo = $("video").get(0);
+            if (mediaVideo.paused) {
+                mediaVideo.play();
+                $(".play").toggleClass("hide");
+            } else {
+                mediaVideo.pause();
+            }
+        });
+
+        /**=== SEÇİM YAPILAN VİDEO'YU OYNAT  ===**/
+
+        $('.video-btn').click(function () {
+            var sr = $(this).data("src");
+            $("#videoDefault").attr('src', sr).attr("autoplay", true);
+            // $(".menu").toggleClass("hide");
+        });
+
+
+        /**==  SEÇİM YAPILDIKTAN SONRA MENÜYÜ GİZLE ==**/
+        $('.video-btn').click(function () {
+            var crrnText = $(this).attr("id");
+            $("#currentVideo").val(crrnText); //seçim yapılan video yu gizli input value'suna yazdır
+            $(".menus .menu").each(function (index) {
+                $(this).addClass("hide");
+            });
+        });
+
+
+
+        /**== videonun son 12 saniyesinde menü aktif olsun ==**/
+
+        setInterval(function () {
+
+            var Second = $('#video_container').find('video').get(0).currentTime;
+
+            var totalTime = $('#video_container').find('video').get(0).duration;
+
+            var endPoint = (totalTime - 12.00);
+
+            if (Second >= endPoint) {
+                var nowVideo = $("#currentVideo").val(); // videonun sonunda açılacak olan soru ekranı burada
+                $("." + nowVideo).removeClass("hide");
+            }
+        }, 500)
+
+    </script>
+</body>
+</html>
